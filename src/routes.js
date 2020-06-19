@@ -28,8 +28,8 @@ export default function Routes() {
           },
         })}
         tabBarOptions={{
-          activeTintColor: 'tomato',
-          inactiveTintColor: 'gray',
+          activeTintColor: '#00c853',
+          inactiveTintColor: '#1b1b1b'
         }}
       >
         <Tab.Screen name="Listar" component={Home} />

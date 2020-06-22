@@ -13,4 +13,7 @@ function GetCoinHistory(coinID, quantity){
   return axios.get(baseUrl + `/${coinID}/${quantity}`)
 }
 
-export { GetAllCoins, GetCoinHistory }
+function GetCoinHistoryDays(coinID, quantity){
+  return axios.get(baseUrl + `/daily/${coinID}/${quantity}`)
+}
+export { GetAllCoins, GetCoinHistory, GetCoinHistoryDays }

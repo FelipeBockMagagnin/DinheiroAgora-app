@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function CoinIcon(props) {
   console.log(props);
 
-  style = {
+  const style = {
     fontSize: props.size, 
     color:props.color,
     fontWeight: 'bold',

@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import { GetAllCoins } from '../../services/awesomeApiCoins'
 import CoinIcon from '../../components/coinIcon';
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [coins, setCoins] = useState()
 
   useEffect(() => {
@@ -24,8 +24,8 @@ export default function Home() {
       <FlatList
         data={coins}
         keyExtractor={coins => String(coins.id)}
-        numColumns={2}        
-        //onEndReached={loadcoins}
+        numColumns={2} 
+        onTouchEnd={() => navigation.navigate('Money')}       
         onEndReachedThreshold={0.2}
         renderItem={({ item: coin }) => (
           <View style={styles.coin}>

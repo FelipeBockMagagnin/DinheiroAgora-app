@@ -3,6 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
 import styles from './styles';
 import { Feather } from '@expo/vector-icons';
 import { GetAllCoins } from '../../services/awesomeApiCoins'
+import CoinIcon from '../../components/coinIcon';
 
 export default function Home() {
   const [coins, setCoins] = useState()
@@ -28,7 +29,7 @@ export default function Home() {
         onEndReachedThreshold={0.2}
         renderItem={({ item: coin }) => (
           <View style={styles.coin}>
-            <Feather style={{textAlign: 'center'}} name='dollar-sign' size={16} color='#00c853' />
+            <CoinIcon style={{textAlign: 'center'}} name={coin.code} size={16} color='#00c853'  ></CoinIcon>
             <Text style={styles.coinProperty}>{coin.name}</Text>
             <Text style={styles.coinValue}>{'R$' + Number(coin.bid).toFixed(2).toString().replace('.', ',')}</Text>
           </View>

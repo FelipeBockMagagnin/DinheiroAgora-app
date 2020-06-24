@@ -8,8 +8,8 @@ export default function Convert() {
   const [coins, setCoins] = useState()
   const [selectedValue, setSelectedValue] = useState('USD');
   const [selectedTargetValue, setSelectedTargetValue] = useState('USD');
-  const [result, setResult] = useState('0,00')
   const [inputValue, setInputvalue] = useState('1,00')
+  const [inputTargetValue, setInputTargetValue] = useState('1,00')
 
   useEffect(() => {
     GetAllCoins().then(data => {
@@ -20,46 +20,59 @@ export default function Convert() {
   if (coins === undefined) {
     return <Loading></Loading>
   }
+  
+  function calculateConversion() {
+    if(inputTargetValue === undefined || inputValue === undefined){
+      alert('Por favor, insira valores nos campos')
+      return
+    }
+
+    const fromCoin = coins.find(element => element.code == selectedValue).bid;
+    const toCoin = coins.find(element => element.code == selectedTargetValue).bid;
+
+    const conversionRateTo = fromCoin / toCoin;
+    const conversionRateFrom = toCoin / fromCoin;
+
+    //alert(conversionRateFrom +  conversionRateTo)
+    setInputvalue(conversionRateTo * Number(inputTargetValue));
+    setInputTargetValue(conversionRateFrom * Number(inputValue));
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Convert</Text>
+      <Text style={{ fontSize: 20, fontWeight: 'bold', flex: 1 }}>Converter</Text>
 
       <View style={styles.innerContainer}>
-        <TextInput value={inputValue} onChangeText={(value) => setInputvalue(value)} style={styles.input}></TextInput>
-        <Picker
-          selectedValue={selectedValue}
-          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-          style={styles.input}>
-          {coins.map(coin => <Picker.Item label={coin.name} value={coin.code} />)}
-        </Picker>
-      </View>
-
-      <Text>In</Text>
-
-      <View style={styles.innerContainer}>
-        <Picker
-          selectedValue={selectedTargetValue}
-          onValueChange={(itemValue, itemIndex) => setSelectedTargetValue(itemValue)}
-          style={styles.input}>
-          {coins.map(coin => <Picker.Item label={coin.name} value={coin.code} />)}
-        </Picker>
+        <TextInput
+          value={inputValue}
+          onChangeText={(value) => setInputvalue(value)}
+          style={styles.textInput}
+        />
+        <View style={styles.pickerInput}>
+          <Picker
+            selectedValue={selectedValue}
+            onValueChange={(itemValue, itemIndex) => { setSelectedValue(itemValue); calculateConversion() }}>
+            {coins.map(coin => <Picker.Item label={coin.name} value={coin.code} />)}
+          </Picker>
+        </View>
       </View>
 
       <View style={styles.innerContainer}>
-        <Button title='Converter' onPress={() => {
-          const fromCoin = coins.find(element => element.code == selectedValue).bid;
-          const toCoin = coins.find(element => element.code == selectedTargetValue).bid;
+        <TextInput
+          value={inputTargetValue}
+          onChangeText={(value) => setInputTargetValue(value)}
+          style={styles.textInput}
+        />
 
-          const conversionRate = fromCoin/toCoin;
-          setResult(conversionRate * inputValue);
-        }} />
-      </View>
-
-      <View>
-        <Text style={{ textAlign: 'center', fontSize: 20, fontWeight: 'bold' }}>Resultado</Text>
-        <Text style={{ textAlign: 'center' }} >{result}</Text>
+        <View style={styles.pickerInput}>
+          <Picker
+            selectedValue={selectedTargetValue}
+            onValueChange={(itemValue, itemIndex) => { setSelectedTargetValue(itemValue); calculateConversion() }}>
+            {coins.map(coin => <Picker.Item label={coin.name} value={coin.code} />)}
+          </Picker>
+        </View>
       </View>
     </View>
   )
 }
+
